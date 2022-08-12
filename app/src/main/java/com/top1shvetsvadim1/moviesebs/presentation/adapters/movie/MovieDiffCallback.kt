@@ -30,7 +30,7 @@ object MovieDiffCallback : DiffUtil.ItemCallback<MovieUIModel>() {
         }
 
         if (oldItem.data != newItem.data) {
-            payloads.add(MoviePayload.DataChange(newData = newItem.data))
+            newItem.data?.let { MoviePayload.DataChange(newData = it) }?.let { payloads.add(it) }
         }
 
         return payloads

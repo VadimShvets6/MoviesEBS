@@ -10,29 +10,4 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 class DomainModule {
 
-    @Provides
-    fun provideGetMoviesListUseCase(movieRepository: MovieRepository): GetMoviesListUseCase {
-        return GetMoviesListUseCase(movieRepository)
-    }
-
-    @Provides
-    fun provideGetGenreListUseCase(movieRepository: MovieRepository): GetGenreListUseCase {
-        return GetGenreListUseCase(movieRepository)
-    }
-
-    @Provides
-    fun provideGetReviewListUseCase(movieRepository: MovieRepository): GetReviewsUseCase {
-        return GetReviewsUseCase(movieRepository)
-    }
-
-    @Provides
-    fun provideGetMovieDetailUseCase(movieRepository: MovieRepository): GetMovieDetailUseCase {
-        return GetMovieDetailUseCase(movieRepository)
-    }
-
-    @Provides
-    fun provideSearchMovieUseCase(movieRepository: MovieRepository): SearchMovieUseCase {
-        return SearchMovieUseCase(movieRepository)
-    }
-
 }

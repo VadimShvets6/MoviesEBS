@@ -3,6 +3,7 @@ package com.top1shvetsvadim1.moviesebs.presentation.fragments.main
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.top1shvetsvadim1.moviesebs.databinding.FragmentMainBinding
 import com.top1shvetsvadim1.moviesebs.presentation.adapters.movie.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,8 +59,8 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModelObserves()
         setupRecyclerView()
+        viewModelObserves()
         searchMovies()
     }
 
@@ -69,16 +71,14 @@ class MainFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (count > 3) {
                     jobSearch.cancel()
-                    jobSearch = lifecycleScope.launch {
+                    jobSearch = lifecycleScope.launch(Dispatchers.IO) {
                         delay(500)
                         viewModel.searchMovie(s?.toString() ?: "")
                     }
-                }
-                if (s?.toString() == "") {
+                } else if (before == 1) {
                     jobSearch.cancel()
-                    jobSearch = lifecycleScope.launch {
-                        delay(500)
-                        viewModelMethods()
+                    jobSearch = lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.searchMovie("")
                     }
                 }
             }
@@ -89,8 +89,9 @@ class MainFragment : Fragment() {
 
     private fun viewModelObserves() {
         viewModel.listMovies.observe(viewLifecycleOwner) {
-            1
-            movieAdapter.submitList(it)
+            lifecycleScope.launch(Dispatchers.IO) {
+                movieAdapter.submitData(it)
+            }
         }
     }
 
@@ -99,7 +100,7 @@ class MainFragment : Fragment() {
     }
 
     private fun viewModelMethods() {
-        viewModel.getMoviesList()
+        viewModel.listPaging()
     }
 
     override fun onDestroy() {

@@ -1,12 +1,13 @@
 package com.top1shvetsvadim1.moviesebs.domain
 
+import androidx.paging.map
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SearchMovieUseCase @Inject constructor(
     private val repository: MovieRepository
 ) {
-    suspend operator fun invoke(name: String) = repository.searchMovie(name).map {
+    suspend operator fun invoke(name: String) = repository.getMoviesList(name).map {
         it.map { entity ->
             MovieUIModel(
                 tag = entity.id,
