@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.top1shvetsvadim1.moviesebs.domain.GetMoviesListUseCase
 import com.top1shvetsvadim1.moviesebs.domain.MovieUIModel
 import com.top1shvetsvadim1.moviesebs.domain.SearchMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,21 +23,25 @@ class MainFragmentViewModel @Inject constructor(
     private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
 
-    private val _listMovies = MutableLiveData<List<MovieUIModel>>()
-    val listMovies: LiveData<List<MovieUIModel>>
+    private val _listMovies = MutableLiveData<PagingData<MovieUIModel>>()
+    val listMovies: LiveData<PagingData<MovieUIModel>>
         get() = _listMovies
 
-    fun getMoviesList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getMoviesListUseCase().collectLatest {
+    private var job: Job = Job()
+
+    fun listPaging() {
+        job.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            getMoviesListUseCase().cachedIn(this).collect {
                 _listMovies.postValue(it)
             }
         }
     }
 
     fun searchMovie(name: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            searchMovieUseCase(name).collectLatest {
+        job.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            searchMovieUseCase(name).cachedIn(this).collect {
                 _listMovies.postValue(it)
             }
         }

@@ -1,8 +1,11 @@
 package com.top1shvetsvadim1.moviesebs.presentation.adapters.movie
 
+import android.text.TextUtils.substring
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -14,7 +17,7 @@ import com.top1shvetsvadim1.moviesebs.utils.MoviePayload
 
 class MoviesAdapter(
     val onAction: (ActionMovieAdapter) -> Unit
-) : ListAdapter<MovieUIModel, MoviesAdapter.MoviesViewHolder>(MovieDiffCallback) {
+) : PagingDataAdapter<MovieUIModel, MoviesAdapter.MoviesViewHolder>(MovieDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         val binding = MovieItemBinding.inflate(
@@ -27,7 +30,10 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val movieItem = getItem(position)
-        holder.bind(movieItem)
+        if (movieItem != null) {
+            Log.d("Paging", "$movieItem")
+            holder.bind(movieItem)
+        }
     }
 
     override fun onBindViewHolder(
@@ -76,6 +82,7 @@ class MoviesAdapter(
         }
 
         private fun setGenres(genres: String) {
+            Log.d("GENREUI", genres)
             binding.genres.text = genres
         }
 
@@ -93,8 +100,14 @@ class MoviesAdapter(
             binding.tvMovieRating.text = "$rating"
         }
 
-        fun setData(data: String) {
-            binding.tvMovieYear.text = data.substring(0, 4)
+        fun setData(data: String?) {
+            var result = ""
+            result = if(data.equals("")){
+                "2021"
+            } else {
+                data?.substring(0,4) ?: "2021"
+            }
+            binding.tvMovieYear.text = result
         }
     }
 
