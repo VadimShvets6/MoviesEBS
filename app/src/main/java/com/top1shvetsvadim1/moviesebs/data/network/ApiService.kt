@@ -41,7 +41,8 @@ interface ApiService {
     @GET("search/movie")
     suspend fun getSearchMovieList(
         @Query(QUERY_PARAM_API_KEY) apiKey: String = PARAM_API_KEY,
-        @Query(QUERY_SEARCH) searchName: String
+        @Query(QUERY_SEARCH) searchName: String,
+        @Query(QUERY_PARAM_PAGE) page : Int
     ): MoviesItemsList
 
     companion object {

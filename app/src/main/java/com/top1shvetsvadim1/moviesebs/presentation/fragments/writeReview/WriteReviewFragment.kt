@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -16,6 +18,9 @@ import com.top1shvetsvadim1.moviesebs.R
 import com.top1shvetsvadim1.moviesebs.data.network.ApiService.Companion.BASE_IMAGE_URL
 import com.top1shvetsvadim1.moviesebs.databinding.FragmentWriteReviewBinding
 import com.top1shvetsvadim1.moviesebs.presentation.fragments.reviews.ReviewsFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class WriteReviewFragment : Fragment() {
 
@@ -48,7 +53,6 @@ class WriteReviewFragment : Fragment() {
 
     private fun ratingBarListener() {
         binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-
             if (rating > 0) {
                 makeButtonActive()
             }
@@ -57,8 +61,11 @@ class WriteReviewFragment : Fragment() {
 
     private fun editTextTitleListener() {
         binding.editTextTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {binding.editTextReview.isFocusable = true}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.editTextReview.isFocusable) {
+                    binding.appBar.setExpanded(false)
+                }
                 makeButtonActive()
             }
 
@@ -68,11 +75,15 @@ class WriteReviewFragment : Fragment() {
 
     private fun editTextReviewListener() {
         binding.editTextReview.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                binding.editTextReview.isFocusable = true
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.editTextReview.isFocusable) {
+                    binding.appBar.setExpanded(false)
+                }
                 makeButtonActive()
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
     }
@@ -82,16 +93,22 @@ class WriteReviewFragment : Fragment() {
             with(binding.buttonWriteReview) {
                 isEnabled = true
                 setOnClickListener {
-                    Snackbar.make(binding.root, "Thanks for your review", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(
-                            ContextCompat.getColor(
-                                requireActivity(),
-                                R.color.snack_bar_bg_4CAF50
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        binding.progressBar.isVisible = true
+                        delay(1000)
+                        Snackbar.make(binding.root, "Thanks for your review", Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(
+                                ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.snack_bar_bg_4CAF50
+                                )
                             )
-                        )
-                        .setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-                        .show()
-                    findNavController().popBackStack()
+                            .setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+                            .show()
+                        binding.progressBar.isVisible = false
+                        delay(1000)
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }

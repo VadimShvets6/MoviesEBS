@@ -1,9 +1,12 @@
 package com.top1shvetsvadim1.moviesebs.data.repository
 
+import android.util.Log
+import androidx.paging.*
 import com.top1shvetsvadim1.moviesebs.data.database.GenreItemDBModel
 import com.top1shvetsvadim1.moviesebs.data.database.GenreItemDao
 import com.top1shvetsvadim1.moviesebs.data.database.Mapper
 import com.top1shvetsvadim1.moviesebs.data.network.ApiService
+import com.top1shvetsvadim1.moviesebs.data.paging.MoviePagingSource
 import com.top1shvetsvadim1.moviesebs.domain.MovieEntity
 import com.top1shvetsvadim1.moviesebs.domain.MovieRepository
 import com.top1shvetsvadim1.moviesebs.domain.ReviewAuthorItem
@@ -19,9 +22,15 @@ class MovieRepositoryImpl @Inject constructor(
     private val mapper: Mapper
 ) : MovieRepository {
 
-    override suspend fun getMoviesList(): Flow<List<MovieEntity>> {
+    private fun getPagerMovies(searchString: String) = Pager(
+        PagingConfig(19),
+        pagingSourceFactory = { MoviePagingSource(apiService, searchString) }
+    ).flow
+
+
+    override suspend fun getMoviesList(searchString: String): Flow<PagingData<MovieEntity>> {
         return combine(
-            flowOf(apiService.getMoviesList(page = 1).movies),
+            getPagerMovies(searchString),
             getGenreList()
         ) { movies, genres ->
             movies.map {
@@ -33,6 +42,7 @@ class MovieRepositoryImpl @Inject constructor(
                     title = it.title,
                     voteAverage = it.voteAverage,
                     genres = genres.filter { genre ->
+                        Log.d("GENREUI", "genre $genres")
                         genre.id in it.genreIds
                     }
                 )
@@ -41,11 +51,13 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun syncGenres() {
+        Log.d("GENREUI", "tut")
         val mapped = mapper.mapGenreListEntityToGenreListDBModel(apiService.getGenreList().genres)
         genreItemDao.addGenreList(mapped)
     }
 
     override suspend fun getGenreList(): Flow<List<GenreItemDBModel>> {
+        syncGenres()
         return genreItemDao.getGenreList()
     }
 
@@ -74,27 +86,6 @@ class MovieRepositoryImpl @Inject constructor(
                     rating = it.authorDetails.rating ?: 0f
                 ), content = it.content, updateAt = it.updateAt, id = it.id
             )
-        }
-    }
-
-    override suspend fun searchMovie(name: String): Flow<List<MovieEntity>> {
-        return combine(
-            flowOf(apiService.getSearchMovieList(searchName = name).movies),
-            getGenreList()
-        ) { movies, genres ->
-            movies.map {
-                MovieEntity(
-                    id = it.id,
-                    posterPath = it.posterPath,
-                    overview = it.overview,
-                    releaseDate = it.releaseDate,
-                    title = it.title,
-                    voteAverage = it.voteAverage,
-                    genres = genres.filter { genre ->
-                        genre.id in it.genreIds
-                    }
-                )
-            }
         }
     }
 }

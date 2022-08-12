@@ -5,6 +5,6 @@ data class MovieUIModel(
     val title: String,
     val picture: String?,
     val rating: Double,
-    val data: String,
+    val data: String?,
     val genres: String
 )

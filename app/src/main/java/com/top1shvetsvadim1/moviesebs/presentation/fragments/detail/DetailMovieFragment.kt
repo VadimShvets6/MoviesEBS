@@ -71,7 +71,7 @@ class DetailMovieFragment : Fragment() {
                     ratingBarMovie.rating = (voteAverage / 2).toFloat()
                     tvMovieRating.text = "$voteAverage".substring(0, 3)
                     tvMovieTitle.text = title
-                    tvMovieYear.text = releaseDate.substring(0, 4)
+                    tvMovieYear.text = releaseDate?.substring(0, 4) ?: "2001"
                     tvGenres.text = genres.joinToString(", ") { genres -> genres.name }
                 }
             }

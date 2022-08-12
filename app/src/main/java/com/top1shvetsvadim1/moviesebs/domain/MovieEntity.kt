@@ -7,7 +7,7 @@ data class MovieEntity(
     val id: Int,
     val posterPath: String?,
     val overview: String,
-    val releaseDate: String,
+    val releaseDate: String?,
     val title: String,
     val voteAverage: Double,
     val genres: List<GenreItemDBModel>
