@@ -1,12 +1,10 @@
 package com.top1shvetsvadim1.moviesebs.presentation.adapters.movie
 
-import android.text.TextUtils.substring
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.top1shvetsvadim1.moviesebs.R
@@ -82,7 +80,6 @@ class MoviesAdapter(
         }
 
         private fun setGenres(genres: String) {
-            Log.d("GENREUI", genres)
             binding.genres.text = genres
         }
 
@@ -101,11 +98,10 @@ class MoviesAdapter(
         }
 
         fun setData(data: String?) {
-            var result = ""
-            result = if(data.equals("")){
-                "2021"
+            val result = if (data.equals("")) {
+                DEFAULT_YEAR
             } else {
-                data?.substring(0,4) ?: "2021"
+                data?.substring(0, 4) ?: DEFAULT_YEAR
             }
             binding.tvMovieYear.text = result
         }
@@ -117,5 +113,6 @@ class MoviesAdapter(
 
     companion object {
         private const val DIVIDE_RATING_BY_2 = 2
+        private const val DEFAULT_YEAR = "2021"
     }
 }

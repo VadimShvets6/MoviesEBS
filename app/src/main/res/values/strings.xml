@@ -10,4 +10,9 @@
     <string name="leave_a_review">Leave a review</string>
     <string name="write_your_review_button">Write your review</string>
     <string name="submit_button">Submit</string>
+    <string name="no_internet_conection">No Internet connection</string>
+    <string name="no_reviews">No reviews</string>
+    <string name="description">Description</string>
+    <string name="reviews">Reviews</string>
+    <string name="thansk_for_your_review">Thanks for your review</string>
 </resources>

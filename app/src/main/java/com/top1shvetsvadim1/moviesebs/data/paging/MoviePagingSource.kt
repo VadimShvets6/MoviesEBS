@@ -5,7 +5,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.top1shvetsvadim1.moviesebs.data.network.ApiService
 import com.top1shvetsvadim1.moviesebs.domain.MovieItem
-import javax.inject.Inject
 
 class MoviePagingSource constructor(
     private val apiService: ApiService,
@@ -18,7 +17,7 @@ class MoviePagingSource constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieItem> {
         return try {
-            val currentPage = params.key ?: 1
+            val currentPage = params.key ?: START_PAGE
             Log.d("Paging", "$currentPage")
             val result = if (searchString.isBlank()) {
                 apiService.getMoviesList(page = currentPage).movies
@@ -28,13 +27,18 @@ class MoviePagingSource constructor(
 
             LoadResult.Page(
                 data = result,
-                prevKey = if (currentPage == 1) null else -1,
-                nextKey = currentPage.plus(1)
+                prevKey = if (currentPage == START_PAGE) null else -1,
+                nextKey = currentPage.plus(NEXT_PAGE)
             )
 
         } catch (e: Exception) {
             Log.d("Paging", " Error $e")
             LoadResult.Error(e)
         }
+    }
+
+    companion object{
+        private const val START_PAGE = 1
+        private const val NEXT_PAGE = 1
     }
 }

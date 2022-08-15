@@ -3,28 +3,33 @@ package com.top1shvetsvadim1.moviesebs.presentation.fragments.main
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.top1shvetsvadim1.moviesebs.R
 import com.top1shvetsvadim1.moviesebs.databinding.FragmentMainBinding
 import com.top1shvetsvadim1.moviesebs.presentation.adapters.movie.MoviesAdapter
+import com.top1shvetsvadim1.moviesebs.presentation.fragments.base.BaseFragment
+import com.top1shvetsvadim1.moviesebs.utils.ResultOperator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class MainFragment : Fragment() {
 
-    private var _binding: FragmentMainBinding? = null
-    private val binding: FragmentMainBinding
-        get() = _binding ?: throw RuntimeException("FragmentMainBinding == null")
+@AndroidEntryPoint
+class MainFragment : BaseFragment<FragmentMainBinding>() {
+
+    override fun getViewBinding(inflater: LayoutInflater): FragmentMainBinding {
+        return FragmentMainBinding.inflate(inflater)
+    }
 
     private val viewModel: MainFragmentViewModel by viewModels()
 
@@ -42,14 +47,6 @@ class MainFragment : Fragment() {
                 )
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,18 +90,54 @@ class MainFragment : Fragment() {
                 movieAdapter.submitData(it)
             }
         }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResultOperator.Error -> {
+                    if (it.exception.javaClass.simpleName.equals("UnknownHostException")) {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.no_internet_conection),
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setBackgroundTint(
+                                ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.snack_bar_no_internet
+                                )
+                            )
+                            .setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+                            .show()
+                        binding.progressBar.isVisible = true
+                    }
+                }
+            }
+        }
     }
+
 
     private fun setupRecyclerView() {
         binding.rvListMovies.adapter = movieAdapter
+        binding.rvListMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < -80) {
+                    binding.goToUp.isVisible = true
+                    binding.goToUp.setOnClickListener {
+                        binding.rvListMovies.scrollToPosition(START_POSITION)
+                        binding.goToUp.isVisible = false
+                    }
+                } else if (dy > 0) {
+                    binding.goToUp.isVisible = false
+                }
+            }
+        })
     }
 
     private fun viewModelMethods() {
         viewModel.listPaging()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    companion object{
+        private const val START_POSITION = 0
     }
 }

@@ -12,4 +12,5 @@
     <color name="text_696A76">#696A76</color>
     <color name="text_genres_7E7E81">#929293</color>
     <color name="snack_bar_bg_4CAF50">#4CAF50</color>
+    <color name="snack_bar_no_internet">#E31818</color>
 </resources>

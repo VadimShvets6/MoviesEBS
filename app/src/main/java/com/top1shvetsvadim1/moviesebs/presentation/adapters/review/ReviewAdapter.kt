@@ -56,7 +56,7 @@ class ReviewAdapter :
                     setAuthorName(authorDetails.username)
                     setData(updateAt.substring(0, 10))
                     setContent(content)
-                    setRatingBar((authorDetails.rating?.div(2)) ?: 0f)
+                    setRatingBar((authorDetails.rating?.div(2)) ?: DEFAULT_RATING)
                     setPhotoAuthor(authorDetails.avatarPath)
                 }
             }
@@ -92,5 +92,6 @@ class ReviewAdapter :
     companion object {
         private const val INCOMPLETE_URL = 32
         private const val BASE_AUTHOR_PHOTO_URL = "https://www.gravatar.com/avatar"
+        private const val DEFAULT_RATING = 0f
     }
 }

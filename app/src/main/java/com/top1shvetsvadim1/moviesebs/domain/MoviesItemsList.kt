@@ -5,7 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MoviesItemsList(
-
     @Json(name = "page")
     val page: Int,
     @Json(name = "results")

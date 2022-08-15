@@ -13,7 +13,7 @@ object ReviewDiffCallback : DiffUtil.ItemCallback<ReviewUIModel>() {
         return oldItem == newItem
     }
 
-    override fun getChangePayload(oldItem: ReviewUIModel, newItem: ReviewUIModel): Any? {
+    override fun getChangePayload(oldItem: ReviewUIModel, newItem: ReviewUIModel): Any {
         val payloads = mutableListOf<ReviewPayload>()
 
         if (oldItem.authorDetails.avatarPath != newItem.authorDetails.avatarPath) {

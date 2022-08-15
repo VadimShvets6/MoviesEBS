@@ -10,13 +10,18 @@ class ViewPagerAdapter(
 ) : FragmentStateAdapter(parent) {
 
     override fun getItemCount(): Int {
-        return 2
+        return COUNT_OF_FRAGMENTS_2
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> fragmentDescription
+            FIRST_FRAGMENT -> fragmentDescription
             else -> fragmentReview
         }
+    }
+
+    companion object{
+        private const val COUNT_OF_FRAGMENTS_2 = 2
+        private const val FIRST_FRAGMENT = 0
     }
 }

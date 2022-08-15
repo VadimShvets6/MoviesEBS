@@ -5,10 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,26 +15,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.top1shvetsvadim1.moviesebs.R
 import com.top1shvetsvadim1.moviesebs.data.network.ApiService.Companion.BASE_IMAGE_URL
 import com.top1shvetsvadim1.moviesebs.databinding.FragmentWriteReviewBinding
+import com.top1shvetsvadim1.moviesebs.presentation.fragments.base.BaseFragment
 import com.top1shvetsvadim1.moviesebs.presentation.fragments.reviews.ReviewsFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class WriteReviewFragment : Fragment() {
+class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding>() {
 
     private val args by navArgs<WriteReviewFragmentArgs>()
 
-    private var _binding: FragmentWriteReviewBinding? = null
-    private val binding: FragmentWriteReviewBinding
-        get() = _binding ?: throw RuntimeException("FragmentWriteReviewBinding == null")
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentWriteReviewBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(inflater: LayoutInflater): FragmentWriteReviewBinding {
+        return FragmentWriteReviewBinding.inflate(inflater)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,7 +51,10 @@ class WriteReviewFragment : Fragment() {
 
     private fun editTextTitleListener() {
         binding.editTextTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {binding.editTextReview.isFocusable = true}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                binding.editTextReview.isFocusable = true
+            }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (binding.editTextReview.isFocusable) {
                     binding.appBar.setExpanded(false)
@@ -78,12 +71,14 @@ class WriteReviewFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.editTextReview.isFocusable = true
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (binding.editTextReview.isFocusable) {
                     binding.appBar.setExpanded(false)
                 }
                 makeButtonActive()
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
     }
@@ -96,7 +91,10 @@ class WriteReviewFragment : Fragment() {
                     lifecycleScope.launch(Dispatchers.Main) {
                         binding.progressBar.isVisible = true
                         delay(1000)
-                        Snackbar.make(binding.root, "Thanks for your review", Snackbar.LENGTH_LONG)
+                        Snackbar.make(
+                            binding.root,
+                            context.getString(R.string.thansk_for_your_review), Snackbar.LENGTH_LONG
+                        )
                             .setBackgroundTint(
                                 ContextCompat.getColor(
                                     requireActivity(),
@@ -112,11 +110,6 @@ class WriteReviewFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     companion object {
