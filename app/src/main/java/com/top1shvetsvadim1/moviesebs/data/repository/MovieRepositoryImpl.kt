@@ -1,7 +1,9 @@
 package com.top1shvetsvadim1.moviesebs.data.repository
 
-import android.util.Log
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.top1shvetsvadim1.moviesebs.data.database.GenreItemDBModel
 import com.top1shvetsvadim1.moviesebs.data.database.GenreItemDao
 import com.top1shvetsvadim1.moviesebs.data.database.Mapper
@@ -13,7 +15,6 @@ import com.top1shvetsvadim1.moviesebs.domain.ReviewAuthorItem
 import com.top1shvetsvadim1.moviesebs.domain.ReviewUIModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -23,7 +24,7 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
 
     private fun getPagerMovies(searchString: String) = Pager(
-        PagingConfig(19),
+        PagingConfig(PAGE_SIZE_20),
         pagingSourceFactory = { MoviePagingSource(apiService, searchString) }
     ).flow
 
@@ -42,7 +43,6 @@ class MovieRepositoryImpl @Inject constructor(
                     title = it.title,
                     voteAverage = it.voteAverage,
                     genres = genres.filter { genre ->
-                        Log.d("GENREUI", "genre $genres")
                         genre.id in it.genreIds
                     }
                 )
@@ -51,7 +51,6 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun syncGenres() {
-        Log.d("GENREUI", "tut")
         val mapped = mapper.mapGenreListEntityToGenreListDBModel(apiService.getGenreList().genres)
         genreItemDao.addGenreList(mapped)
     }
@@ -83,9 +82,14 @@ class MovieRepositoryImpl @Inject constructor(
                     name = it.authorDetails.name,
                     username = it.authorDetails.username,
                     avatarPath = it.authorDetails.avatarPath,
-                    rating = it.authorDetails.rating ?: 0f
+                    rating = it.authorDetails.rating ?: DEFAULT_RATING
                 ), content = it.content, updateAt = it.updateAt, id = it.id
             )
         }
+    }
+
+    companion object{
+        private const val DEFAULT_RATING = 0f
+        private const val PAGE_SIZE_20 = 20
     }
 }

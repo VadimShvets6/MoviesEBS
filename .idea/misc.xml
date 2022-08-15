@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/bg_button_up.xml" value="0.134" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/bg_button_write_review.xml" value="0.115" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/bg_tab_bar.xml" value="0.1515" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/edit_text_for_search.xml" value="0.2703125" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/ic_search.xml" value="0.1895" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/rv_item_anim.xml" value="0.1" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/drawable/test.xml" value="0.1515" />
+        <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/layout/fragment_description.xml" value="0.264" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/layout/fragment_detail_movie.xml" value="0.2" />
         <entry key="..\:/KotlinAndroid/MoviesEBS/app/src/main/res/layout/fragment_main.xml" value="0.25416666666666665" />
