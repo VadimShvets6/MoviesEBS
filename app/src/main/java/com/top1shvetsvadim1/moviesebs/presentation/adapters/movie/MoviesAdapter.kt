@@ -98,6 +98,7 @@ class MoviesAdapter(
         }
 
         fun setData(data: String?) {
+            //TODO: better to hide date instead of put the wrong one
             val result = if (data.equals("")) {
                 DEFAULT_YEAR
             } else {
@@ -112,6 +113,7 @@ class MoviesAdapter(
     }
 
     companion object {
+        //TODO: unnecessary constant
         private const val DIVIDE_RATING_BY_2 = 2
         private const val DEFAULT_YEAR = "2021"
     }

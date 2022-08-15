@@ -54,8 +54,10 @@ class ReviewAdapter :
             with(binding) {
                 with(reviewItem) {
                     setAuthorName(authorDetails.username)
+                    //TODO: try to parse date with one of date formatters
                     setData(updateAt.substring(0, 10))
                     setContent(content)
+                    //TODO: you've already put DEFAULT_RATING as optional value in repo. Do it nonNullable in UIModel.
                     setRatingBar((authorDetails.rating?.div(2)) ?: DEFAULT_RATING)
                     setPhotoAuthor(authorDetails.avatarPath)
                 }
@@ -80,6 +82,7 @@ class ReviewAdapter :
 
         fun setPhotoAuthor(photo: String?) {
             photo?.let {
+                //TODO: move this logic (link parsing) to other class or extensions. Solid.
                 if (it.length == INCOMPLETE_URL) {
                     binding.photoAuthor.load(BASE_AUTHOR_PHOTO_URL + photo)
                 } else {
@@ -90,6 +93,7 @@ class ReviewAdapter :
     }
 
     companion object {
+        //TODO: hardcoded constant. API can change its base URL and your constant will not work.
         private const val INCOMPLETE_URL = 32
         private const val BASE_AUTHOR_PHOTO_URL = "https://www.gravatar.com/avatar"
         private const val DEFAULT_RATING = 0f

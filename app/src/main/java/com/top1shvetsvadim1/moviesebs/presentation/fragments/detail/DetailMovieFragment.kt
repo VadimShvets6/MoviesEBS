@@ -28,6 +28,7 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding>() {
 
     private val viewModel: DetailViewModel by viewModels()
 
+    //TODO: use lazy instead of lateinit if it is possible
     private lateinit var fragmentReview: ReviewsFragment
     private lateinit var fragmentDescription: DescriptionFragment
 
@@ -63,6 +64,8 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding>() {
                     ratingBarMovie.rating = (voteAverage / 2).toFloat()
                     tvMovieRating.text = "$voteAverage".substring(0, 3)
                     tvMovieTitle.text = title
+                    //TODO: set optional values during mapping to Entity, not in fragment
+                    //TODO: FRAGMENT ONLY SHOWS UI and do basic business logic
                     tvMovieYear.text = releaseDate?.substring(0, 4) ?: DEFAULT_RELEASE_DATA
                     tvGenres.text = genres.joinToString(", ") { genres -> genres.name }
                 }
@@ -82,9 +85,13 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding>() {
         }.attach()
     }
 
+    //TODO: ctrl + alt + L
     companion object{
+        //TODO: unnecessary constant
         private const val FIRST_FRAGMENT = 0
+        //TODO: unnecessary constant
         private const val SECOND_FRAGMENT = 1
+        //TODO: better to hide date instead of shows the wrong one
         private const val DEFAULT_RELEASE_DATA = "2001"
     }
 }

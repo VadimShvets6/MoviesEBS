@@ -17,6 +17,7 @@ object ReviewDiffCallback : DiffUtil.ItemCallback<ReviewUIModel>() {
         val payloads = mutableListOf<ReviewPayload>()
 
         if (oldItem.authorDetails.avatarPath != newItem.authorDetails.avatarPath) {
+            //TODO: there can be UI misbehaviour when next item has no avatar in it.
             newItem.authorDetails.avatarPath?.let { ReviewPayload.PhotoUserAuthorChange(newPhotoUser = it) }
                 ?.let { payloads.add(it) }
         }

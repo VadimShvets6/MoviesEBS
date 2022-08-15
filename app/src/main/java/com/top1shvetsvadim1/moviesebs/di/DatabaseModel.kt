@@ -13,8 +13,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModel {
+    //TODO: unnecessary newLine
 
-
+    //TODO: bad database name
     private const val DB_NAME = "app_database.db"
 
     @Singleton
@@ -23,7 +24,9 @@ object DatabaseModel {
         context,
         AppDatabase::class.java,
         DB_NAME
-    ).fallbackToDestructiveMigration()
+    )
+        //TODO: destructive migration is not a good solution when you store user's data in Room. Try to test autoMigrations.
+        .fallbackToDestructiveMigration()
         .build()
 
     @Singleton

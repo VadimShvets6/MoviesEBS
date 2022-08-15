@@ -13,19 +13,21 @@ class DescriptionFragment : BaseFragment<FragmentDescriptionBinding>() {
     }
 
     private val args by lazy {
+        //TODO: unnecessary DEFAULT_VALUE in ?.getString
         arguments?.getString(PARAM_OVERVIEW, DEFAULT_VALUE) ?: DEFAULT_VALUE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.overview.text = args
-
+        //TODO: unnecessary newLine
     }
 
     companion object {
         const val PARAM_OVERVIEW = "overview"
         private const val DEFAULT_VALUE = ""
 
+        //TODO: you do not need JvmStatic there.
         @JvmStatic
         fun newInstance(overview: String) =
             DescriptionFragment().apply {

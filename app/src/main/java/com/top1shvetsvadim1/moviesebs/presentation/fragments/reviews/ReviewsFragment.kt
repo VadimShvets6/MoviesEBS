@@ -21,9 +21,11 @@ class ReviewsFragment : BaseFragment<FragmentReviewsBinding>() {
     }
 
     private val movieImage by lazy {
+        //TODO: unnecessary defaultValue in getString
         arguments?.getString(PARAM_MOVIE_IMAGE, "") ?: throw RuntimeException("Unknown url image")
     }
     private val movieName by lazy {
+        //TODO: unnecessary defaultValue in getString
         arguments?.getString(PARAM_MOVIE_NAME, "") ?: throw RuntimeException("Unknown movie name")
     }
     private val reviews by lazy {
@@ -40,6 +42,7 @@ class ReviewsFragment : BaseFragment<FragmentReviewsBinding>() {
         setupRecyclerView()
         binding.buttonWriteReview.setOnClickListener {
             findNavController().navigate(
+                //TODO: consider to name navigation actions simpler: to{FragmentDestination}
                 DetailMovieFragmentDirections.actionDetailMovieFragmentToWriteReviewFragment(
                     movieImage,
                     movieName
@@ -69,6 +72,7 @@ class ReviewsFragment : BaseFragment<FragmentReviewsBinding>() {
         const val PARAM_MOVIE_NAME = "movie_name"
         const val PARAM_REVIEWS = "reviews"
 
+        //TODO: you do not need JvmStatic here.
         @JvmStatic
         fun newInstance(movieImage: String, movieName: String, reviews: ArrayList<ReviewUIModel>) =
             ReviewsFragment().apply {

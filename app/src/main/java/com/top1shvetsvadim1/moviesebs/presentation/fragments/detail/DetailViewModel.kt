@@ -26,6 +26,7 @@ class DetailViewModel @Inject constructor(
     val listReview: LiveData<List<ReviewUIModel>>
         get() = _listReview
 
+    //TODO: you do not need to save job in this case.
     private var job: Job = Job()
 
     fun getDetailMovie(id: Int) {

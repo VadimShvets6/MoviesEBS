@@ -20,8 +20,11 @@ class ViewPagerAdapter(
         }
     }
 
+    //TODO: Ctrl + Alt + L
     companion object{
+        //TODO: unnecessary constant
         private const val COUNT_OF_FRAGMENTS_2 = 2
+        //TODO: unnecessary constant
         private const val FIRST_FRAGMENT = 0
     }
 }

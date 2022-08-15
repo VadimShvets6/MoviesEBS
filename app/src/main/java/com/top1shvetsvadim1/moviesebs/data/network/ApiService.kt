@@ -10,6 +10,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    //TODO: if you have more than one query param, consider to use QueryMap
     @GET("discover/movie")
     suspend fun getMoviesList(
         @Query(QUERY_PARAM_API_KEY) apiKey: String = PARAM_API_KEY,

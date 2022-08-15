@@ -3,6 +3,7 @@ package com.top1shvetsvadim1.moviesebs.domain
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+//TODO: if you use generated adapters, use it for all JSON data classes.
 @JsonClass(generateAdapter = true)
 data class MovieItem(
     @Json(name = "genre_ids")

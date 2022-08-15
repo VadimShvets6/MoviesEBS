@@ -52,6 +52,7 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding>() {
     private fun editTextTitleListener() {
         binding.editTextTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //TODO: edit text should handle focusable state by itself
                 binding.editTextReview.isFocusable = true
             }
 
@@ -67,6 +68,7 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding>() {
     }
 
     private fun editTextReviewListener() {
+        //TODO: try to use lambda listener
         binding.editTextReview.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.editTextReview.isFocusable = true
@@ -113,6 +115,8 @@ class WriteReviewFragment : BaseFragment<FragmentWriteReviewBinding>() {
     }
 
     companion object {
+
+        //TODO: static
         @JvmStatic
         fun newInstance(movieImage: String, movieName: String) =
             ReviewsFragment().apply {

@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
+    //TODO: if you provide generic/primitive values, consider to use Names annotation.
     @Provides
     fun providesBaseUrl() : String = "https://api.themoviedb.org/3/"
 

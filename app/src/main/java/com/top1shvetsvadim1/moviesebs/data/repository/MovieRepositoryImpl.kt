@@ -83,13 +83,16 @@ class MovieRepositoryImpl @Inject constructor(
                     username = it.authorDetails.username,
                     avatarPath = it.authorDetails.avatarPath,
                     rating = it.authorDetails.rating ?: DEFAULT_RATING
-                ), content = it.content, updateAt = it.updateAt, id = it.id
+                ), //TODO: forgot to put newLines
+                content = it.content, updateAt = it.updateAt, id = it.id
             )
         }
     }
 
-    companion object{
+    companion object {
         private const val DEFAULT_RATING = 0f
+
+        //TODO: rename to PAGE_SIZE
         private const val PAGE_SIZE_20 = 20
     }
 }

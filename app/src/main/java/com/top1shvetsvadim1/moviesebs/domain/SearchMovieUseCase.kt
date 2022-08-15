@@ -4,6 +4,7 @@ import androidx.paging.map
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+//TODO: you can use this useCase with "" as param instead of getMoviesUseCase
 class SearchMovieUseCase @Inject constructor(
     private val repository: MovieRepository
 ) {

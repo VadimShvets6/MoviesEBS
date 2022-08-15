@@ -69,7 +69,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                 if (count > 3) {
                     jobSearch.cancel()
                     jobSearch = lifecycleScope.launch(Dispatchers.IO) {
+                        //TODO: reduce this time to 300-400
                         delay(500)
+                        //TODO: try s.toString()
                         viewModel.searchMovie(s?.toString() ?: "")
                     }
                 } else if (before == 1) {
@@ -91,9 +93,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             }
         }
 
+        //TODO: move error handling to BaseFragment.
+        //TODO: add an optional button "try again" when it is possible (logic permits)
         viewModel.error.observe(viewLifecycleOwner) {
             when (it) {
                 is ResultOperator.Error -> {
+                    //TODO: check class properly with :: or is
                     if (it.exception.javaClass.simpleName.equals("UnknownHostException")) {
                         Snackbar.make(
                             binding.root,
@@ -118,9 +123,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private fun setupRecyclerView() {
         binding.rvListMovies.adapter = movieAdapter
+        //TODO: better to unregister listener in OnDestroyView
         binding.rvListMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < -80) {
+                    //TODO: for these purposes FAB is recommended.
                     binding.goToUp.isVisible = true
                     binding.goToUp.setOnClickListener {
                         binding.rvListMovies.scrollToPosition(START_POSITION)
@@ -137,7 +144,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         viewModel.listPaging()
     }
 
+    //TODO: Ctrl + Alt + L
     companion object{
+        //TODO: Unnecessary constant
         private const val START_POSITION = 0
     }
 }

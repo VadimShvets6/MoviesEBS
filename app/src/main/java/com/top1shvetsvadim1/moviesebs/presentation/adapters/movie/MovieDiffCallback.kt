@@ -21,6 +21,7 @@ object MovieDiffCallback : DiffUtil.ItemCallback<MovieUIModel>() {
         }
 
         if (oldItem.picture != newItem.picture) {
+            //TODO: there can be UI misbehaviour when next item has no picture in it.
             newItem.picture?.let { MoviePayload.PictureChange(newPicture = it) }
                 ?.let { payloads.add(it) }
         }
@@ -30,6 +31,7 @@ object MovieDiffCallback : DiffUtil.ItemCallback<MovieUIModel>() {
         }
 
         if (oldItem.data != newItem.data) {
+            //TODO: there can be UI misbehaviour when next item has no data in it.
             newItem.data?.let { MoviePayload.DataChange(newData = it) }?.let { payloads.add(it) }
         }
 

@@ -28,6 +28,7 @@ class MoviePagingSource constructor(
             LoadResult.Page(
                 data = result,
                 prevKey = if (currentPage == START_PAGE) null else -1,
+                //TODO: check if next page exists
                 nextKey = currentPage.plus(NEXT_PAGE)
             )
 
@@ -39,6 +40,7 @@ class MoviePagingSource constructor(
 
     companion object{
         private const val START_PAGE = 1
+        //TODO: +1 is an incremental constant, it does not require name .plus(1) = .inc()
         private const val NEXT_PAGE = 1
     }
 }
